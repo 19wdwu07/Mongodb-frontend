@@ -20,7 +20,11 @@
 
       <!-- homePage -->
       <div id="homePage">
-        This is my Home page
+        <button id="viewProducts" type="button" class="my-3 btn btn-dark rounded-pill mr-20px">View all Products</button>
+
+        <div id="productCards" class="row my-3">
+        </div>
+
       </div>
       <!-- adminPage -->
       <div id="adminPage" class="my-5 mx-3 px-3 bg-dark text-light">
@@ -30,8 +34,19 @@
         <button id="registerBtn" type="button" class="btn btn-dark rounded-pill mr-20px">Register</button>
         <button id="viewUserBtn" type="button" class="btn btn-dark rounded-pill">View all users</button>
 
-      </div>
 
+
+        <!-- login form -->
+        <form id="loginForm">
+        <label for="username" class=""> Username: </label>
+        <input type="text" id="username" name="username" class="form-control" value="username">
+
+        <label for="password" class=""> Password: </label>
+        <input type="password" name="password" id="password" class="form-control" value="password">
+
+        <button id="submit" name="button" type="submit" class="btn btn-lg btn-dark mt-4"> Submit </button>
+        </form>
+      </div>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
