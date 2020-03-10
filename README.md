@@ -1,6 +1,6 @@
 # Mongodb-Frontend
 
-This project should work hand in hand with the [backend](https://github.com/19wdwu07/Mongodb-project). Backend project must be running and connected to Mongodb. 
+This project should work hand in hand with the [backend](https://github.com/19wdwu07/Mongodb-project). Backend project must be running and connected to Mongodb.
 
 ### 1. Installation
 
@@ -23,7 +23,7 @@ Enter the SERVER_URL and SERVER_PORT data.
 ### 3. Access in the browser
 use your localhost to view the app
 
-### 4. Aunthentication
+### 4. Authentication
 Only users who has a login can manipulate the products such as add, update and delete. Otherwise, register as a new user, then login.
 
 You have to have products in database to view them. Otherwise first add products before viewing, update or delete.
