@@ -3,10 +3,22 @@ console.log(sessionStorage);
 let url;
 
 $(document).ready(function(){
+  if (sessionStorage['userName']) {
+    console.log('You are logged in');
+
+  } else {
+    console.log('Please login');
+  }
+
+
   $('#heading').click(function(){
     // $(this).css('background', 'teal');
   });
-
+  $('#loginForm').hide();
+  $('#loginBtn').click(function(){
+    $('#loginForm').show();
+    $()
+  });
   $('#adminPage').hide();
   $('#adminBtn').click(function(){
     $('#adminPage').show();
@@ -31,11 +43,7 @@ $(document).ready(function(){
     error:function(){
       console.log('error: cannot call api');
     }//error
-
-
   });//ajax
-
-
 
   $('#viewUserBtn').click(function(){
     $.ajax({
@@ -48,8 +56,6 @@ $(document).ready(function(){
       error:function(){
         console.log('error: cannot call api');
       }//error
-
-
     });//ajax
   });//viewUser button
 
@@ -64,7 +70,7 @@ $(document).ready(function(){
 
         for(let i=0; i<productsFromMongo.length; i++){
           document.getElementById('productCards').innerHTML +=
-          `<div class="col">
+          `<div class="col-3 border">
           <h3 class=""> ${productsFromMongo[i].name}</h3>
           <h4 class="">${productsFromMongo[i].price}</h4>
           </div>`;
@@ -80,6 +86,38 @@ $(document).ready(function(){
 
     });//ajax
   });//viewUser button
+
+  //updateProduct
+
+  $('#productForm').submit(function(){
+    event.preventDefault();
+    let  productId = $('#productId').val();
+    let  productName = $('#productName').val();
+    let  productPrice = $('#productPrice').val();
+    let  userId = $('#userId').val();
+
+    console.log(productId, productName, productPrice, userId);
+    $.ajax({
+      url :`${url}/updateProduct/${productId}`,
+      type :'PATCH',
+      data:{
+        name : productName,
+        price :productPrice,
+        userId : userId
+        },
+      success : function(data){
+        console.log(data);
+      },//success
+      error:function(){
+        console.log('error: cannot call api');
+      }//error
+
+
+    });//ajax
+
+  });//submit function for update product
+
+
 
 
   $('#loginForm').submit(function(){
@@ -112,5 +150,16 @@ $(document).ready(function(){
 
     });//ajax
 
-  });//submit function
+  });//submit function for login loginForm
+
+
+
+  //logout
+
+$('#logoutBtn').click(function(){
+  sessionStorage.clear();
+  console.log(sessionStorage);
+})
+
+
 });//document.ready

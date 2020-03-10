@@ -13,21 +13,22 @@
   </head>
   <body>
     <div class="container">
-      <h1 id="heading" class="jumbotron text-dark">MongoDB Frontend</h1>
+      <h1 id="heading" class="jumbotron mt-3 rounded-pill text-dark">MongoDB Frontend</h1>
 
-      <button id="homeBtn" type="button" class="btn btn-dark rounded-pill mr-20px">Home</button>
-      <button id="adminBtn" type="button" class="btn btn-dark rounded-pill">Admin</button>
-
+      <div class="clearfix">
+        <button id="homeBtn" type="button" class="float-left btn btn-dark rounded-pill ml-4"><h4>Home</h4></button>
+        <button id="adminBtn" type="button" class="float-right btn btn-dark rounded-pill mr-4"> <h4> Admin </h4> </button>
+      </div>
       <!-- homePage -->
       <div id="homePage">
-        <button id="viewProducts" type="button" class="my-3 btn btn-dark rounded-pill mr-20px">View all Products</button>
+        <button id="viewProducts" type="button" class="my-3 btn btn-dark ml-4 rounded-pill mr-20px"><h6> View all Products </h6></button>
 
         <div id="productCards" class="row my-3">
         </div>
 
       </div>
       <!-- adminPage -->
-      <div id="adminPage" class="my-5 mx-3 px-3 bg-dark text-light">
+      <div id="adminPage" class="my-5 mx-3 px-5 bg-dark text-light">
 
         <button id="loginBtn" type="button" class="btn btn-dark rounded-pill mr-20px">Login</button>
         <button id="logoutBtn" type="button" class="btn btn-dark rounded-pill">Logout</button>
@@ -37,17 +38,65 @@
 
 
         <!-- login form -->
-        <form id="loginForm">
+        <form id="loginForm" class="my-5">
         <label for="username" class=""> Username: </label>
         <input type="text" id="username" name="username" class="form-control" value="username">
 
         <label for="password" class=""> Password: </label>
         <input type="password" name="password" id="password" class="form-control" value="password">
 
-        <button id="submit" name="button" type="submit" class="btn btn-lg btn-dark mt-4"> Submit </button>
+        <button id="submit" name="button" type="submit" class="btn bg-light btn-lg btn-dark mt-4"> Submit </button>
         </form>
-      </div>
-    </div>
+
+
+        <!-- Product Manipulation -->
+
+        <!-- Manipulate products -->
+        <div id="manipulate">
+            <button id="addProductBtn" class="py-4 px-3 text-center btn-lg manipBtn" type="button" name="button">Add new product</button>
+            <button id="updateProductBtn" class="py-4 px-3 text-center btn-lg manipBtn" type="button" name="button">Update a product</button>
+            <button id="deleteProductBtn" class="py-4 px-3 text-center btn-lg manipBtn" type="button" name="button">Delete a product</button>
+        </div>
+
+        <!-- Input ID -->
+        <div id="inputIdDiv" class="">
+          <form id="productForm" class="bg-dark py-5 px-5">
+            <h1 class="text-primary"> Product Form </h1>   <br><br>
+            <label class="mr-5" for="productId"> Enter product Id: </label>
+            <input type="text" class="ml-5" id="productId" name="inputId" >
+            <br><br>
+
+            <label class="mr-4" for="productName"> Enter name of the product </label>
+            <input type="text" id="productName" name="productName" >
+            <br><br>
+
+            <label class="mr-4" for="productPrice"> Enter price of the product </label>
+            <input type="number" id="productPrice" name="productPrice" >
+            <br><br>
+
+            <label class="mr-5" for="userId"> Enter the userId </label>
+            <input type="text" class="ml-5" id="userId" name="userId" >
+            <br><br>
+
+            <button id="updateProduct" name="productButton" type="submit" class="btn btn-primary">Update product</button>
+          </form>
+        </div>
+
+
+
+
+
+      </div><!--admin page-->
+
+
+
+    </div><!--container-->
+
+
+
+
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
