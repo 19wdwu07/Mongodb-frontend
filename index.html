@@ -16,46 +16,67 @@
       <h1 id="heading" class="jumbotron mt-3 rounded-pill text-dark">MongoDB Frontend</h1>
 
       <div class="clearfix">
-        <button id="homeBtn" type="button" class="float-left btn btn-dark rounded-pill ml-4"><h4>Home</h4></button>
-        <button id="adminBtn" type="button" class="float-right btn btn-dark rounded-pill mr-4"> <h4> Admin </h4> </button>
+        <button id="homeBtn" type="button" class="float-left btn btn-dark rounded-pill ml-4">Home</button>
+        <button id="adminBtn" type="button" class="float-right btn btn-dark rounded-pill mr-4">  Admin  </button>
       </div>
       <!-- homePage -->
       <div id="homePage">
-        <button id="viewProducts" type="button" class="my-3 btn btn-dark ml-4 rounded-pill mr-20px"><h6> View all Products </h6></button>
+       <button id="viewProducts" type="button" class="my-3 btn btn-dark ml-4 rounded-pill mr-2"> View all Products </button>
 
-        <div id="productCards" class="row my-3">
+        <div id="productCards" class="row my-3 px-5">
         </div>
 
       </div>
       <!-- adminPage -->
-      <div id="adminPage" class="my-5 mx-3 px-5 bg-dark text-light">
+      <div id="adminPage" class="my-5 mx-3 py-5 px-5 bg-dark text-light">
 
         <button id="loginBtn" type="button" class="btn btn-dark rounded-pill mr-20px">Login</button>
         <button id="logoutBtn" type="button" class="btn btn-dark rounded-pill">Logout</button>
         <button id="registerBtn" type="button" class="btn btn-dark rounded-pill mr-20px">Register</button>
         <button id="viewUserBtn" type="button" class="btn btn-dark rounded-pill">View all users</button>
 
-
-
         <!-- login form -->
-        <form id="loginForm" class="my-5">
+        <form id="loginForm" class="my-5 rounded-pill">
         <label for="username" class=""> Username: </label>
-        <input type="text" id="username" name="username" class="form-control" value="username">
-
+        <input type="text" id="username" name="username" class="form-control" value="">
+        <br> <br>
         <label for="password" class=""> Password: </label>
-        <input type="password" name="password" id="password" class="form-control" value="password">
+        <input type="password" name="password" id="password" class="form-control" value="">
 
-        <button id="submit" name="button" type="submit" class="btn bg-light btn-lg btn-dark mt-4"> Submit </button>
+        <button id="submit" name="button" type="submit" class="btn bg-light text-dark btn-lg btn-dark mt-4"> Submit </button>
         </form>
+
+        <!-- <form action="/loginUser" method="post"> -->
+          <form id="registerForm" class="bg-light py-3 px-3">
+            <div class="form-group">
+              <label for="r-username">Username</label>
+              <input type="text" name="r-username" class="form-control" id="r-username" aria-describedby="emailHelp">
+              <!-- <small id="emailHelp"  class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            </div>
+            <div class="form-group">
+              <label for="r-email">Email</label>
+              <input type="email" autocomplete="new-password" name="r-email" class="form-control" id="r-email">
+            </div>
+            <div class="form-group">
+              <label for="r-password">Password</label>
+              <input type="password" autocomplete="new-password" name="r-password" class="form-control" id="r-password">
+            </div>
+            <!-- <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div> -->
+            <button id="r-submit" name="r-button" type="submit" class="btn btn-primary">Submit</button>
+
+          </form>
 
 
         <!-- Product Manipulation -->
 
         <!-- Manipulate products -->
-        <div id="manipulate">
-            <button id="addProductBtn" class="py-4 px-3 text-center btn-lg manipBtn" type="button" name="button">Add new product</button>
-            <button id="updateProductBtn" class="py-4 px-3 text-center btn-lg manipBtn" type="button" name="button">Update a product</button>
-            <button id="deleteProductBtn" class="py-4 px-3 text-center btn-lg manipBtn" type="button" name="button">Delete a product</button>
+        <div id="manipulate" class="my-5">
+            <button id="addProductBtn" class="py-4 px-3 text-center btn-lg rounded-pill manipBtn" type="button" name="button">Add new product</button>
+            <button id="updateProductBtn" class="py-4 px-3 text-center btn-lg rounded-pill manipBtn" type="button" name="button">Update a product</button>
+            <button id="deleteProductBtn" class="py-4 px-3 text-center btn-lg rounded-pill manipBtn" type="button" name="button">Delete a product</button>
         </div>
 
         <!-- Input ID -->
@@ -63,22 +84,22 @@
           <form id="productForm" class="bg-dark py-5 px-5">
             <h1 class="text-primary"> Product Form </h1>   <br><br>
             <label class="mr-5" for="productId"> Enter product Id: </label>
-            <input type="text" class="ml-5" id="productId" name="inputId" >
+            <input type="text" class="ml-5 rounded-pill" id="productId" name="inputId" >
             <br><br>
 
             <label class="mr-4" for="productName"> Enter name of the product </label>
-            <input type="text" id="productName" name="productName" >
+            <input type="text" id="productName" name="productName" class="rounded-pill">
             <br><br>
 
             <label class="mr-4" for="productPrice"> Enter price of the product </label>
-            <input type="number" id="productPrice" name="productPrice" >
+            <input type="number" id="productPrice" name="productPrice" class="rounded-pill">
             <br><br>
 
             <label class="mr-5" for="userId"> Enter the userId </label>
-            <input type="text" class="ml-5" id="userId" name="userId" >
+            <input type="text" class="ml-5 rounded-pill" id="userId" name="userId" >
             <br><br>
 
-            <button id="updateProduct" name="productButton" type="submit" class="btn btn-primary">Update product</button>
+            <button id="updateProduct" name="productButton" type="submit" class="btn btn-primary rounded-pill">Update product</button>
           </form>
         </div>
 

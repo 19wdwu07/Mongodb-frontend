@@ -3,26 +3,46 @@ console.log(sessionStorage);
 let url;
 
 $(document).ready(function(){
+  $('#loginForm').hide();
+  $('#logoutBtn').hide();
+  $('#productForm').hide();
+  $('#manipulate').hide();
+  $('#registerForm').hide();
+  $('#viewUserBtn').hide();
+
   if (sessionStorage['userName']) {
     console.log('You are logged in');
+    $('#manipulate').show();
+    $('#loginBtn').hide();
+    $('#logoutBtn').show();
+    $('#registerBtn').hide();
+    $('#viewUserBtn').show();
 
   } else {
     console.log('Please login');
+    // $('#registerBtn').show();
+    // ('#loginBtn').show();
+    $('#logoutBtn').hide();
+    $('#viewUserBtn').hide();
   }
 
-
+  //checking if jquery node_modules work properly when you set up
   $('#heading').click(function(){
     // $(this).css('background', 'teal');
   });
-  $('#loginForm').hide();
+
+
+
   $('#loginBtn').click(function(){
     $('#loginForm').show();
-    $()
+
   });
   $('#adminPage').hide();
   $('#adminBtn').click(function(){
     $('#adminPage').show();
     $('#homePage').hide();
+    $('#loginBtn').show();
+    $('#registerBtn').show();
   });
   $('#homeBtn').click(function(){
     $('#adminPage').hide();
@@ -51,7 +71,10 @@ $(document).ready(function(){
       type :'GET',
       dataType :'json',
       success : function(usersFromMongo){
-        console.log(usersFromMongo);
+
+        for(let i=0; i<usersFromMongo.length; i++){
+          console.log(usersFromMongo[i].username);
+        }
       },//success
       error:function(){
         console.log('error: cannot call api');
@@ -60,6 +83,7 @@ $(document).ready(function(){
   });//viewUser button
 
   $('#viewProducts').click(function(){
+    console.log('viewProducts clicked');//checking if button click responds
     $.ajax({
       url :`${url}/allProductsFromDB`,
       type :'GET',
@@ -70,7 +94,7 @@ $(document).ready(function(){
 
         for(let i=0; i<productsFromMongo.length; i++){
           document.getElementById('productCards').innerHTML +=
-          `<div class="col-3 border">
+          `<div class="col-3 border rounded-pill mr-5 mb-5 px-5 py-3">
           <h3 class=""> ${productsFromMongo[i].name}</h3>
           <h4 class="">${productsFromMongo[i].price}</h4>
           </div>`;
@@ -85,42 +109,58 @@ $(document).ready(function(){
 
 
     });//ajax
-  });//viewUser button
+  });//viewProduct button
 
   //updateProduct
-
+  $('#updateProductBtn').click(function(){
+      $('#productForm').show();
+  });
   $('#productForm').submit(function(){
+
+
     event.preventDefault();
+
     let  productId = $('#productId').val();
     let  productName = $('#productName').val();
     let  productPrice = $('#productPrice').val();
     let  userId = $('#userId').val();
 
     console.log(productId, productName, productPrice, userId);
-    $.ajax({
-      url :`${url}/updateProduct/${productId}`,
-      type :'PATCH',
-      data:{
-        name : productName,
-        price :productPrice,
-        userId : userId
-        },
-      success : function(data){
-        console.log(data);
-      },//success
-      error:function(){
-        console.log('error: cannot call api');
-      }//error
+    if (productId == '') {
+      alert('Please enter product details');
+    } else { $.ajax({
+            url :`${url}/updateProduct/${productId}`,
+            type :'PATCH',
+            data:{
+              name : productName,
+              price :productPrice,
+              userId : userId
+              },
+            success : function(data){
+              console.log(data);
+              $('#productId').val('');
+              $('#productName').val('');
+              $('#productPrice').val('');
+              $('#userId').val('');
+            },//success
+            error:function(){
+              console.log('error: cannot call api');
+            }//error
 
 
-    });//ajax
-
+          });//ajax
+    }
   });//submit function for update product
 
 
+//register new user
+  $('#registerBtn').click(function(){
+    $('#registerForm').show();
+  });
 
 
   $('#loginForm').submit(function(){
+
     event.preventDefault();
     let username = $('#username').val();
     let password = $('#password').val();
@@ -141,6 +181,13 @@ $(document).ready(function(){
           sessionStorage.setItem('userName',loginData['username']);
           sessionStorage.setItem('userEmail',loginData['email']);
           console.log(sessionStorage);
+          $('#manipulate').show();
+          $('#username').val('');
+          $('#loginBtn').hide();
+          $('#logoutBtn').show();
+          $('#loginForm').hide();
+          $('#registerBtn').hide();
+          $('#viewUserBtn').show();
         }
       },//success
       error:function(){
@@ -157,9 +204,15 @@ $(document).ready(function(){
   //logout
 
 $('#logoutBtn').click(function(){
+  console.log('You are logged out');
   sessionStorage.clear();
   console.log(sessionStorage);
-})
+  $('#manipulate').hide();
+  $('#loginBtn').show();
+  $('#logoutBtn').hide();
+  $('#registeBtn').show();
+  $('#viewUserBtn').hide();
+});
 
 
 });//document.ready
