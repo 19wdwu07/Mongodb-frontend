@@ -80,7 +80,7 @@ $(document).ready(function(){
         `<div class="col-3 border rounded-pill mr-5 mb-5 px-5 py-3">
         <h3 class=""> ${productsFromMongo[i].name}</h3>
         <h4 class="">${productsFromMongo[i].price}</h4>
-        <img class="img-thumbnail" src="${productsFromMongo[i].image_url}" alt="Sunflower">
+        <img class="img-thumbnail" src="${productsFromMongo[i].image_url}" alt="Image">
         </div>`;
 
       }
@@ -389,6 +389,7 @@ $('#logoutBtn').click(function(){
   $('#viewUserBtn').hide();
   $('#productForm').hide();
   $('#addProductForm').hide();
+  $('#delForm').hide();
 });
 
 
