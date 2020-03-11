@@ -9,6 +9,7 @@ $(document).ready(function(){
   $('#manipulate').hide();
   $('#registerForm').hide();
   $('#viewUserBtn').hide();
+  $('#delForm').hide();
 
   if (sessionStorage['userName']) {
     console.log('You are logged in');
@@ -64,26 +65,30 @@ $(document).ready(function(){
     }//error
   });//ajax
 
+<<<<<<< HEAD
+=======
+
+//view products
+>>>>>>> refs/remotes/origin/master
 
 //view products
   $('#viewProducts').click(function(){
     console.log('viewProducts clicked');//checking if button click responds
     $.ajax({
-      url :`${url}/allProductsFromDB`,
-      type :'GET',
-      dataType :'json',
-      success : function(productsFromMongo){
-        console.log(productsFromMongo);
-        document.getElementById('productCards').innerHTML = "";
+    url :`${url}/allProductsFromDB`,
+    type :'GET',
+    dataType :'json',
+    success : function(productsFromMongo){
+      console.log(productsFromMongo);
+      document.getElementById('productCards').innerHTML = "";
+      for(let i=0; i<productsFromMongo.length; i++){
+        document.getElementById('productCards').innerHTML +=
+        `<div class="col-3 border rounded-pill mr-5 mb-5 px-5 py-3">
+        <h3 class=""> ${productsFromMongo[i].name}</h3>
+        <h4 class="">${productsFromMongo[i].price}</h4>
+        </div>`;
 
-        for(let i=0; i<productsFromMongo.length; i++){
-          document.getElementById('productCards').innerHTML +=
-          `<div class="col-3 border rounded-pill mr-5 mb-5 px-5 py-3">
-          <h3 class=""> ${productsFromMongo[i].name}</h3>
-          <h4 class="">${productsFromMongo[i].price}</h4>
-          </div>`;
-
-        }
+      }
 
       },//success
       error:function(){
@@ -204,6 +209,9 @@ $('#delForm').submit(function(){
     let password = $('#r-password').val();
 
     console.log(username,email, password);
+    if (username == '' || email == '' || password == ''){
+      alert('Please enter all details');
+    } else {
 
     $.ajax({
       url :`${url}/registerUser`,
@@ -213,12 +221,21 @@ $('#delForm').submit(function(){
         email : email,
         password : password
         },
-      success : function(newUser){
-        console.log(newUser, 'added');
+
+      success : function(user){
+        console.log(user);
+        if (! user == 'username taken already. Please try another one'){
         alert('Please login to manipulate the products data');
           $('#loginBtn').show();
           $('#registerBtn').hide();
+          $('#registerForm').hide();
+        } else {
+          alert('username taken already. Please try another one');
+          $('#r-username').val('');
+          $('#r-email').val('');
+          $('#r-password').val('');
 
+        }
 
       },//success
       error:function(){
@@ -228,7 +245,8 @@ $('#delForm').submit(function(){
 
     });//ajax
 
-  });//submit function for login loginForm
+  }//else
+});//submit function for login loginForm
 
 
 
