@@ -47,7 +47,7 @@
         </form>
 
         <!-- <form action="/loginUser" method="post"> -->
-          <form id="registerForm" class="bg-light py-3 px-3">
+          <form id="registerForm" class="bg-light py-3 px-3 mt-5">
             <div class="form-group">
               <label for="r-username">Username</label>
               <input type="text" name="r-username" class="form-control" id="r-username" aria-describedby="emailHelp">
@@ -79,7 +79,7 @@
             <button id="deleteProductBtn" class="py-4 px-3 text-center btn-lg rounded-pill manipBtn" type="button" name="button">Delete a product</button>
         </div>
 
-        <!-- Input ID -->
+        <!-- Input product details for update -->
         <div id="inputIdDiv" class="">
           <form id="productForm" class="bg-dark py-5 px-5">
             <h1 class="text-primary"> Product Form </h1>   <br><br>
@@ -103,8 +103,12 @@
           </form>
         </div>
 
-
-
+        <form id="delForm" class="">
+          <label class="mr-5" for="delProductId"> Enter product Id to delete: </label>
+          <input type="text" class="ml-5 rounded-pill" id="delProductId" name="inputId" >
+          <br><br>
+            <button id="deleteProduct" name="productButton" type="submit" class="btn btn-primary rounded-pill">Delete product</button>
+        </form>
 
 
       </div><!--admin page-->

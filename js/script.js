@@ -9,6 +9,7 @@ $(document).ready(function(){
   $('#manipulate').hide();
   $('#registerForm').hide();
   $('#viewUserBtn').hide();
+  $('#delForm').hide();
 
   if (sessionStorage['userName']) {
     console.log('You are logged in');
@@ -31,8 +32,6 @@ $(document).ready(function(){
     // $(this).css('background', 'teal');
   });
 
-
-
   $('#loginBtn').click(function(){
     $('#loginForm').show();
 
@@ -48,6 +47,7 @@ $(document).ready(function(){
     $('#adminPage').hide();
     $('#homePage').show();
   });
+
 
 //get url and port from config.json
   $.ajax({
@@ -65,52 +65,35 @@ $(document).ready(function(){
     }//error
   });//ajax
 
-  $('#viewUserBtn').click(function(){
-    $.ajax({
-      url :`${url}/allUsers`,
-      type :'GET',
-      dataType :'json',
-      success : function(usersFromMongo){
 
-        for(let i=0; i<usersFromMongo.length; i++){
-          console.log(usersFromMongo[i].username);
-        }
-      },//success
-      error:function(){
-        console.log('error: cannot call api');
-      }//error
-    });//ajax
-  });//viewUser button
+//view products
 
   $('#viewProducts').click(function(){
     console.log('viewProducts clicked');//checking if button click responds
     $.ajax({
-      url :`${url}/allProductsFromDB`,
-      type :'GET',
-      dataType :'json',
-      success : function(productsFromMongo){
-        console.log(productsFromMongo);
-        document.getElementById('productCards').innerHTML = "";
+    url :`${url}/allProductsFromDB`,
+    type :'GET',
+    dataType :'json',
+    success : function(productsFromMongo){
+      console.log(productsFromMongo);
+      document.getElementById('productCards').innerHTML = "";
 
-        for(let i=0; i<productsFromMongo.length; i++){
-          document.getElementById('productCards').innerHTML +=
-          `<div class="col-3 border rounded-pill mr-5 mb-5 px-5 py-3">
-          <h3 class=""> ${productsFromMongo[i].name}</h3>
-          <h4 class="">${productsFromMongo[i].price}</h4>
-          </div>`;
+      for(let i=0; i<productsFromMongo.length; i++){
+        document.getElementById('productCards').innerHTML +=
+        `<div class="col-3 border rounded-pill mr-5 mb-5 px-5 py-3">
+        <h3 class=""> ${productsFromMongo[i].name}</h3>
+        <h4 class="">${productsFromMongo[i].price}</h4>
+        </div>`;
 
-        }
+      }
 
+    },//success
+    error:function(){
+      console.log('error: cannot call api');
+    }//error
 
-      },//success
-      error:function(){
-        console.log('error: cannot call api');
-      }//error
-
-
-    });//ajax
-  });//viewProduct button
-
+  });//ajax
+});//viewProduct button
   //updateProduct
   $('#updateProductBtn').click(function(){
       $('#productForm').show();
@@ -152,6 +135,58 @@ $(document).ready(function(){
     }
   });//submit function for update product
 
+//delete a product
+
+$('#deleteProductBtn').click(function(){
+    $('#delForm').show();
+});
+
+$('#delForm').submit(function(){
+  event.preventDefault();
+
+  let  productId = $('#delProductId').val();
+
+  console.log(productId);
+  if (productId == '') {
+    alert('Please enter product id');
+  } else { $.ajax({
+          url :`${url}/deleteProduct/${productId}`,
+          type :'DELETE',
+          dataType:'json',
+          success : function(data){
+            console.log(data);
+
+          },//success
+          error:function(){
+            console.log('error: cannot call api');
+          }//error
+
+
+        });//ajax
+  }
+});//submit function for delete product
+
+
+
+
+  //view users
+    $('#viewUserBtn').click(function(){
+      $.ajax({
+        url :`${url}/allUsers`,
+        type :'GET',
+        dataType :'json',
+        success : function(usersFromMongo){
+
+          for(let i=0; i<usersFromMongo.length; i++){
+            console.log(usersFromMongo[i].username);
+          }
+        },//success
+        error:function(){
+          console.log('error: cannot call api');
+        }//error
+      });//ajax
+    });//viewUser button
+
 
 //register new user
   $('#registerBtn').click(function(){
@@ -159,35 +194,40 @@ $(document).ready(function(){
   });
 
 
-  $('#loginForm').submit(function(){
+  $('#registerForm').submit(function(){
 
     event.preventDefault();
-    let username = $('#username').val();
-    let password = $('#password').val();
-    console.log(username,password);
+
+    let username = $('#r-username').val();
+    let email = $('#r-email').val();
+    let password = $('#r-password').val();
+
+    console.log(username,email, password);
+    if (username == '' || email == '' || password == ''){
+      alert('Please enter all details');
+    } else {
+
     $.ajax({
-      url :`${url}/loginUser`,
+      url :`${url}/registerUser`,
       type :'POST',
       data:{
         username : username,
+        email : email,
         password : password
         },
-      success : function(loginData){
-        console.log(loginData);
-        if (loginData === 'user not found. Please register' ) {
-          alert ('Register please');
-        } else {
-          sessionStorage.setItem('userId',loginData['_id']);
-          sessionStorage.setItem('userName',loginData['username']);
-          sessionStorage.setItem('userEmail',loginData['email']);
-          console.log(sessionStorage);
-          $('#manipulate').show();
-          $('#username').val('');
-          $('#loginBtn').hide();
-          $('#logoutBtn').show();
-          $('#loginForm').hide();
+      success : function(user){
+        console.log(user);
+        if (! user == 'username taken already. Please try another one'){
+        alert('Please login to manipulate the products data');
+          $('#loginBtn').show();
           $('#registerBtn').hide();
-          $('#viewUserBtn').show();
+          $('#registerForm').hide();
+        } else {
+          alert('username taken already. Please try another one');
+          $('#r-username').val('');
+          $('#r-email').val('');
+          $('#r-password').val('');
+
         }
       },//success
       error:function(){
@@ -197,7 +237,8 @@ $(document).ready(function(){
 
     });//ajax
 
-  });//submit function for login loginForm
+  }//else
+});//submit function for login loginForm
 
 
 
