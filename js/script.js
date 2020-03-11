@@ -5,11 +5,13 @@ let url;
 $(document).ready(function(){
   $('#loginForm').hide();
   $('#logoutBtn').hide();
+  $('#addProductForm').hide();
   $('#productForm').hide();
   $('#manipulate').hide();
   $('#registerForm').hide();
   $('#viewUserBtn').hide();
   $('#delForm').hide();
+  $('#adminPage').hide();
 
   if (sessionStorage['userName']) {
     console.log('You are logged in');
@@ -21,8 +23,6 @@ $(document).ready(function(){
 
   } else {
     console.log('Please login');
-    // $('#registerBtn').show();
-    // ('#loginBtn').show();
     $('#logoutBtn').hide();
     $('#viewUserBtn').hide();
   }
@@ -32,21 +32,18 @@ $(document).ready(function(){
     // $(this).css('background', 'teal');
   });
 
-  $('#loginBtn').click(function(){
-    $('#loginForm').show();
-
-  });
-  $('#adminPage').hide();
-  $('#adminBtn').click(function(){
-    $('#adminPage').show();
-    $('#homePage').hide();
-    $('#loginBtn').show();
-    $('#registerBtn').show();
-  });
   $('#homeBtn').click(function(){
     $('#adminPage').hide();
     $('#homePage').show();
   });
+
+  $('#adminBtn').click(function(){
+    $('#adminPage').show();
+    $('#homePage').hide();
+    // $('#loginBtn').show();
+    // $('#registerBtn').show();
+  });
+
 
 
 //get url and port from config.json
@@ -65,11 +62,8 @@ $(document).ready(function(){
     }//error
   });//ajax
 
-<<<<<<< HEAD
-=======
 
-//view products
->>>>>>> refs/remotes/origin/master
+
 
 //view products
   $('#viewProducts').click(function(){
@@ -86,6 +80,7 @@ $(document).ready(function(){
         `<div class="col-3 border rounded-pill mr-5 mb-5 px-5 py-3">
         <h3 class=""> ${productsFromMongo[i].name}</h3>
         <h4 class="">${productsFromMongo[i].price}</h4>
+        <img class="img-thumbnail" src="${productsFromMongo[i].image_url}" alt="Sunflower">
         </div>`;
 
       }
@@ -99,13 +94,68 @@ $(document).ready(function(){
   });//viewProduct button
 
 
+//add a product
+
+$('#addProductBtn').click(function(){
+  $('#addProductForm').show();
+  $('#productForm').hide();
+  $('#delForm').hide();
+});
+
+
+$('#addProductForm').submit(function(){
+
+  event.preventDefault();
+
+  let name = $('#a-name').val();
+  let price = $('#a-price').val();
+  let userid = $('#a-userid').val();
+
+  console.log(name,price, userid);
+
+  if (name == '' || price == '' || userid == ''){
+    alert('Please enter all details');
+  } else {
+
+  $.ajax({
+    url :`${url}/addProduct`,
+    type :'POST',
+    data:{
+      name : name,
+      price : price,
+      userId : sessionStorage['userID']
+      },
+
+    success : function(product){
+      console.log(product);
+      if (!(product == 'name taken already. Please try another one')) {
+      alert('added the product');
+      } else {
+        alert('name taken already. Please try another one');
+
+      }
+      $('#a-name').val('');
+      $('#a-price').val('');
+      $('#a-userid').val('');
+
+    },//success
+    error:function(){
+      console.log('error: cannot call api');
+    }//error
+
+
+  });//ajax
+
+}//else
+});//submit function for addProduct
 
   //updateProduct
   $('#updateProductBtn').click(function(){
       $('#productForm').show();
+      $('#delForm').hide();
+      $('#addProductForm').hide();
   });
   $('#productForm').submit(function(){
-
 
     event.preventDefault();
 
@@ -123,10 +173,15 @@ $(document).ready(function(){
             data:{
               name : productName,
               price :productPrice,
-              userId : userId
+              userId :sessionStorage['userID']
               },
             success : function(data){
               console.log(data);
+              if (data == '401 error; user has no permission to update') {
+                alert ('401 error; user has no permission to update');
+              } else{
+                alert('modified');
+              }
               $('#productId').val('');
               $('#productName').val('');
               $('#productPrice').val('');
@@ -145,22 +200,37 @@ $(document).ready(function(){
 
 $('#deleteProductBtn').click(function(){
     $('#delForm').show();
+    $('#productForm').hide();
+    $('#addProductForm').hide();
 });
 
 $('#delForm').submit(function(){
   event.preventDefault();
+  if(!sessionStorage['userID']){
+        alert('401, permission denied');
+        return;
+    };
 
   let  productId = $('#delProductId').val();
 
   console.log(productId);
+
   if (productId == '') {
     alert('Please enter product id');
   } else { $.ajax({
           url :`${url}/deleteProduct/${productId}`,
           type :'DELETE',
-          dataType:'json',
+          data:{
+            userId: sessionStorage['userID']
+          },
           success : function(data){
             console.log(data);
+            if (data=='deleted'){
+              alert('deleted');
+              $('#delProductId').val('');
+            } else {
+              alert('Enter a valid id');
+            }
 
           },//success
           error:function(){
@@ -171,8 +241,6 @@ $('#delForm').submit(function(){
         });//ajax
   }
 });//submit function for delete product
-
-
 
 
   //view users
@@ -224,7 +292,7 @@ $('#delForm').submit(function(){
 
       success : function(user){
         console.log(user);
-        if (! user == 'username taken already. Please try another one'){
+        if (!(user == 'username taken already. Please try another one')) {
         alert('Please login to manipulate the products data');
           $('#loginBtn').show();
           $('#registerBtn').hide();
@@ -246,8 +314,66 @@ $('#delForm').submit(function(){
     });//ajax
 
   }//else
-});//submit function for login loginForm
+});//submit function for registerForm
 
+//login
+$('#loginBtn').click(function(){
+  $('#loginForm').show();
+});
+
+
+$('#loginForm').submit(function(){
+  event.preventDefault();
+
+
+  let username = $('#username').val();
+  let password = $('#password').val();
+
+  console.log(username, password);
+
+  if (username == '' || password == ''){
+    alert('Please enter all details');
+  } else {
+
+  $.ajax({
+    url :`${url}/loginUser`,
+    type :'POST',
+    data:{
+      username : username,
+      password : password
+      },
+
+    success : function(user){
+      console.log(user);
+      if (user == 'user not found. Please register'){
+      alert('user not found. Please enter correct data or register a new user');
+
+      } else if (user == 'not authorized'){
+        alert('Please try with correct details');
+        $('#username').val('');
+        $('#password').val('');
+      } else{
+        $('#loginBtn').hide();
+        $('#loginForm').hide();
+        $('#registerBtn').hide();
+        $('#logoutBtn').show();
+        $('#manipulate').show();
+        $('#viewUserBtn').show();
+        sessionStorage.setItem('userID', user['_id']);
+        sessionStorage.setItem('userName',user['username']);
+        sessionStorage.setItem('userEmail',user['email']);
+        console.log(sessionStorage);
+      }
+    },//success
+    error:function(){
+      console.log('error: cannot call api');
+    }//error
+
+
+  });//ajax
+
+}//else
+});//submit function for login loginForm
 
 
   //logout
@@ -259,8 +385,10 @@ $('#logoutBtn').click(function(){
   $('#manipulate').hide();
   $('#loginBtn').show();
   $('#logoutBtn').hide();
-  $('#registeBtn').show();
+  $('#registerBtn').show();
   $('#viewUserBtn').hide();
+  $('#productForm').hide();
+  $('#addProductForm').hide();
 });
 
 
